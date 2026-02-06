@@ -10,7 +10,7 @@ import { Bookmark } from 'lucide-react';
 export default function LoginPage() {
     const [username, setUsername] = useState('emilys'); // Standard dummyjson user
     const [password, setPassword] = useState('emilyspass');
-    const { login, loginAsGuest } = useAuth();
+    const { login } = useAuth();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -21,7 +21,7 @@ export default function LoginPage() {
         try {
             await login(username, password);
         } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : 'Login failed';
+            const message = err instanceof Error ? err.message : 'please check your credentials and try again';
             setError(message);
         } finally {
             setLoading(false);
@@ -66,17 +66,6 @@ export default function LoginPage() {
                         {error && <p className="text-red-500 text-sm">{error}</p>}
                         <Button type="submit" className="w-full" loading={loading}>
                             Sign In
-                        </Button>
-                        <div className="relative my-4">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-background px-2 text-muted-foreground">Or</span>
-                            </div>
-                        </div>
-                        <Button type="button" variant="outline" className="w-full" onClick={loginAsGuest}>
-                            Continue as Guest
                         </Button>
                     </form>
                     <div className="mt-4 text-center text-xs text-muted-foreground">

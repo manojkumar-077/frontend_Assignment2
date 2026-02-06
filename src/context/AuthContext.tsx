@@ -19,17 +19,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
-    const [loading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
-    useEffect(() => {
-        // Initialize from storage on client side only to prevent hydration mismatch
-        const storedUser = storage.getUser();
-        if (storedUser) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setUser(storedUser);
-        }
-    }, []);
+    // Session persistence disabled as per user request
+    // useEffect(() => { ... }, []);
 
     const login = async (username: string, password: string) => {
         try {
@@ -44,7 +38,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             storage.setUser(data);
             router.push('/');
         } catch (error) {
-            console.error('Login failed:', error);
             throw error;
         }
     };
